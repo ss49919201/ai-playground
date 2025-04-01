@@ -5,14 +5,14 @@
 
   --button-primary-hover: #383838;
   --button-secondary-hover: #f2f2f2;
+  --button-danger: #e53e3e;
+  --button-danger-hover: #c53030;
 
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-items: center;
   min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
+  padding: 40px 20px;
   font-family: var(--font-geist-sans);
 }
 
@@ -24,145 +24,313 @@
 
     --button-primary-hover: #ccc;
     --button-secondary-hover: #1a1a1a;
+    --button-danger: #f56565;
+    --button-danger-hover: #e53e3e;
   }
 }
 
 .main {
+  width: 100%;
+  max-width: 800px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
+  gap: 24px;
 }
 
-.main ol {
-  font-family: var(--font-geist-mono);
-  padding-left: 0;
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.addButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.addButton {
+  background-color: var(--foreground);
+  color: var(--background);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.addButton:hover {
+  background-color: var(--button-primary-hover);
+}
+
+.emptyMessage {
+  text-align: center;
+  padding: 40px;
+  background-color: var(--gray-alpha-100);
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.recordList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recordCard {
+  background-color: var(--gray-alpha-100);
+  border-radius: 8px;
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.recordCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.recordHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.recordTitle {
+  font-size: 20px;
+  font-weight: 600;
   margin: 0;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  list-style-position: inside;
 }
 
-.main li:not(:last-of-type) {
+.recordDate {
+  font-size: 14px;
+  color: rgba(var(--gray-rgb), 0.7);
+}
+
+.recordDescription {
+  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.recordMeta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: rgba(var(--gray-rgb), 0.7);
+}
+
+.recordActions {
+  display: flex;
+  gap: 12px;
+}
+
+.viewButton, .deleteButton {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.viewButton {
+  background-color: var(--gray-alpha-200);
+  color: var(--foreground);
+}
+
+.viewButton:hover {
+  background-color: var(--button-secondary-hover);
+}
+
+.deleteButton {
+  background-color: var(--button-danger);
+  color: white;
+  border: none;
+}
+
+.deleteButton:hover {
+  background-color: var(--button-danger-hover);
+}
+
+/* フォーム関連のスタイル */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.input, .textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--gray-alpha-200);
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.input:focus, .textarea:focus {
+  outline: none;
+  border-color: var(--foreground);
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.submitButton {
+  background-color: var(--foreground);
+  color: var(--background);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 16px;
+  align-self: flex-end;
+}
+
+.submitButton:hover {
+  background-color: var(--button-primary-hover);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+/* 詳細ページのスタイル */
+.recordDetail {
+  background-color: var(--gray-alpha-100);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.detailHeader {
+  margin-bottom: 24px;
+}
+
+.detailTitle {
+  font-size: 24px;
+  font-weight: 700;
   margin-bottom: 8px;
 }
 
-.main code {
-  font-family: inherit;
-  background: var(--gray-alpha-100);
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-weight: 600;
+.detailDate {
+  font-size: 16px;
+  color: rgba(var(--gray-rgb), 0.7);
 }
 
-.ctas {
+.detailDescription {
+  margin-bottom: 32px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.exerciseList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.exerciseItem {
+  background-color: var(--gray-alpha-200);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.exerciseName {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.setList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setItem {
+  display: flex;
+  gap: 16px;
+  padding: 8px;
+  background-color: var(--background);
+  border-radius: 4px;
+}
+
+.setNumber {
+  font-weight: 600;
+  min-width: 30px;
+}
+
+.setDetail {
   display: flex;
   gap: 16px;
 }
 
-.ctas a {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  border: none;
-  border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
-}
-
-a.primary {
-  background: var(--foreground);
-  color: var(--background);
-  gap: 8px;
-}
-
-a.secondary {
-  border-color: var(--gray-alpha-200);
-  min-width: 158px;
-}
-
-.footer {
-  grid-row-start: 3;
-  display: flex;
-  gap: 24px;
-}
-
-.footer a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer img {
-  flex-shrink: 0;
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
+.setNotes {
+  font-style: italic;
+  color: rgba(var(--gray-rgb), 0.7);
+  margin-top: 4px;
 }
 
 @media (max-width: 600px) {
   .page {
-    padding: 32px;
-    padding-bottom: 80px;
+    padding: 20px 16px;
   }
 
-  .main {
-    align-items: center;
+  .title {
+    font-size: 24px;
   }
 
-  .main ol {
+  .recordHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .recordActions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .viewButton, .deleteButton {
+    width: 100%;
     text-align: center;
   }
 
-  .ctas {
+  .setItem {
     flex-direction: column;
+    gap: 4px;
   }
 
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
-  .footer {
+  .setDetail {
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
   }
 }
