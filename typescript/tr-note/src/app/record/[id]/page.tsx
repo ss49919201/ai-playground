@@ -10,7 +10,7 @@ import { TrainingRecord } from "../../../types";
 export default function TrainingRecordDetail() {
   const params = useParams();
   const router = useRouter();
-  const { getTrainingRecord, deleteTrainingRecord } = useTraining();
+  const { getTrainingRecord } = useTraining();
   const [record, setRecord] = useState<TrainingRecord | undefined>(undefined);
 
   useEffect(() => {
@@ -24,14 +24,6 @@ export default function TrainingRecordDetail() {
       }
     }
   }, [params.id, getTrainingRecord, router]);
-
-  const handleDelete = () => {
-    if (record && confirm("このトレーニング記録を削除してもよろしいですか？")) {
-      deleteTrainingRecord(record.id);
-      console.log(`ID: ${record.id} のトレーニング記録が削除されました`);
-      router.push("/");
-    }
-  };
 
   if (!record) {
     return (
@@ -93,9 +85,9 @@ export default function TrainingRecordDetail() {
         </div>
 
         <div className={styles.recordActions}>
-          <button onClick={handleDelete} className={styles.deleteButton}>
+          <Link href={`/delete/${record.id}`} className={styles.deleteButton}>
             このトレーニング記録を削除
-          </button>
+          </Link>
         </div>
       </main>
     </div>

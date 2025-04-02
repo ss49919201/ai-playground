@@ -154,6 +154,16 @@
   background-color: var(--button-danger-hover);
 }
 
+.cancelButton {
+  background-color: var(--gray-alpha-200);
+  color: var(--foreground);
+  border: none;
+}
+
+.cancelButton:hover {
+  background-color: var(--button-secondary-hover);
+}
+
 /* フォーム関連のスタイル */
 .form {
   display: flex;
@@ -221,6 +231,50 @@
 
 .backLink:hover {
   text-decoration: underline;
+}
+
+/* 削除確認ページのスタイル */
+.deleteConfirmation {
+  background-color: var(--gray-alpha-100);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.recordSummary {
+  padding: 16px;
+  background-color: var(--gray-alpha-200);
+  border-radius: 8px;
+}
+
+.warningMessage {
+  padding: 16px;
+  background-color: rgba(229, 62, 62, 0.1);
+  border-left: 4px solid var(--button-danger);
+  border-radius: 4px;
+}
+
+.warningMessage p {
+  margin: 0;
+}
+
+.warningMessage p:first-child {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.deleteActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.deletingMessage {
+  font-style: italic;
+  color: rgba(var(--gray-rgb), 0.7);
 }
 
 /* 詳細ページのスタイル */

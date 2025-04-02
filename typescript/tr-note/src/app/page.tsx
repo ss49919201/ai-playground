@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 
 export default function Home() {
-  const { trainingRecords, deleteTrainingRecord } = useTraining();
+  const { trainingRecords } = useTraining();
 
   return (
     <div className={styles.page}>
@@ -45,12 +45,12 @@ export default function Home() {
                   >
                     詳細を見る
                   </Link>
-                  <button
-                    onClick={() => deleteTrainingRecord(record.id)}
+                  <Link
+                    href={`/delete/${record.id}`}
                     className={styles.deleteButton}
                   >
                     削除
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
