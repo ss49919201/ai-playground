@@ -1,27 +1,22 @@
-"use client";
-
-import { useState } from "react";
-import { useTraining } from "../../contexts/TrainingContext";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "../page.module.css";
+import { redirect } from "next/navigation";
+import { addTrainingRecord } from "../../actions/training";
+import AddForm from "./AddForm";
 
 export default function AddTrainingRecord() {
-  const router = useRouter();
-  const { addTrainingRecord } = useTraining();
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [description, setDescription] = useState("");
+  async function handleAddRecord(formData: FormData) {
+    "use server";
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    const title = formData.get("title") as string;
+    const date = formData.get("date") as string;
+    const description = formData.get("description") as string;
 
     if (!title || !date) {
-      alert("タイトルと日付は必須です");
-      return;
+      return { error: "タイトルと日付は必須です" };
     }
 
-    addTrainingRecord({
+    await addTrainingRecord({
       title,
       date,
       description,
@@ -33,8 +28,9 @@ export default function AddTrainingRecord() {
       date,
       description,
     });
-    router.push("/");
-  };
+
+    redirect("/");
+  }
 
   return (
     <div className={styles.page}>
@@ -45,53 +41,7 @@ export default function AddTrainingRecord() {
 
         <h1 className={styles.title}>トレーニング記録の追加</h1>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label htmlFor="title" className={styles.label}>
-              タイトル *
-            </label>
-            <input
-              id="title"
-              type="text"
-              className={styles.input}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="例: 胸トレーニング、脚の日など"
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="date" className={styles.label}>
-              日付 *
-            </label>
-            <input
-              id="date"
-              type="date"
-              className={styles.input}
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="description" className={styles.label}>
-              メモ
-            </label>
-            <textarea
-              id="description"
-              className={styles.textarea}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="トレーニングに関するメモを入力してください"
-            />
-          </div>
-
-          <button type="submit" className={styles.submitButton}>
-            保存
-          </button>
-        </form>
+        <AddForm onSubmit={handleAddRecord} />
       </main>
     </div>
   );

@@ -1,11 +1,9 @@
-"use client";
-
-import { useTraining } from "../contexts/TrainingContext";
 import Link from "next/link";
 import styles from "./page.module.css";
+import { getAllTrainingRecords } from "../actions/training";
 
-export default function Home() {
-  const { trainingRecords } = useTraining();
+export default async function Home() {
+  const trainingRecords = await getAllTrainingRecords();
 
   return (
     <div className={styles.page}>

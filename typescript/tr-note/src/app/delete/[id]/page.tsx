@@ -1,63 +1,29 @@
-"use client";
-
-import { useTraining } from "../../../contexts/TrainingContext";
-import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "../../page.module.css";
-import { useEffect, useState } from "react";
-import { TrainingRecord } from "../../../types";
+import {
+  getTrainingRecord,
+  deleteTrainingRecord,
+} from "../../../actions/training";
+import { notFound, redirect } from "next/navigation";
+import DeleteForm from "./DeleteForm";
 
-export default function DeleteTrainingRecord() {
-  const params = useParams();
-  const router = useRouter();
-  const { getTrainingRecord, deleteTrainingRecord } = useTraining();
-  const [record, setRecord] = useState<TrainingRecord | undefined>(undefined);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    if (params.id) {
-      const foundRecord = getTrainingRecord(params.id as string);
-      setRecord(foundRecord);
-
-      if (!foundRecord) {
-        console.log(`ID: ${params.id} のトレーニング記録が見つかりません`);
-        router.push("/");
-      }
-    }
-  }, [params.id, getTrainingRecord, router]);
-
-  const handleDelete = () => {
-    if (record) {
-      setIsDeleting(true);
-
-      // 削除処理
-      deleteTrainingRecord(record.id);
-      console.log(`ID: ${record.id} のトレーニング記録が削除されました`);
-
-      // 少し遅延させてから一覧ページに戻る
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
-    }
-  };
-
-  const handleCancel = () => {
-    // 詳細ページに戻る
-    if (record) {
-      router.push(`/record/${record.id}`);
-    } else {
-      router.push("/");
-    }
-  };
+export default async function DeleteTrainingRecord({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const record = await getTrainingRecord(params.id);
 
   if (!record) {
-    return (
-      <div className={styles.page}>
-        <main className={styles.main}>
-          <p>読み込み中...</p>
-        </main>
-      </div>
-    );
+    console.log(`ID: ${params.id} のトレーニング記録が見つかりません`);
+    notFound();
+  }
+
+  async function handleDelete() {
+    "use server";
+    await deleteTrainingRecord(params.id);
+    console.log(`ID: ${params.id} のトレーニング記録が削除されました`);
+    redirect("/");
   }
 
   return (
@@ -87,20 +53,7 @@ export default function DeleteTrainingRecord() {
             <p>この操作は取り消せません。</p>
           </div>
 
-          <div className={styles.deleteActions}>
-            {isDeleting ? (
-              <p className={styles.deletingMessage}>削除中...</p>
-            ) : (
-              <>
-                <button onClick={handleCancel} className={styles.cancelButton}>
-                  キャンセル
-                </button>
-                <button onClick={handleDelete} className={styles.deleteButton}>
-                  削除する
-                </button>
-              </>
-            )}
-          </div>
+          <DeleteForm onDelete={handleDelete} recordId={record.id} />
         </div>
       </main>
     </div>

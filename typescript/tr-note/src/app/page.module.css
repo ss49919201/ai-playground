@@ -220,6 +220,16 @@
   background-color: var(--button-primary-hover);
 }
 
+.errorMessage {
+  background-color: rgba(229, 62, 62, 0.1);
+  border-left: 4px solid var(--button-danger);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  color: var(--button-danger);
+  font-weight: 500;
+}
+
 .backLink {
   display: inline-flex;
   align-items: center;

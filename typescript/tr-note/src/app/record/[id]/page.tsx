@@ -1,38 +1,18 @@
-"use client";
-
-import { useTraining } from "../../../contexts/TrainingContext";
-import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "../../page.module.css";
-import { useEffect, useState } from "react";
-import { TrainingRecord } from "../../../types";
+import { getTrainingRecord } from "../../../actions/training";
+import { notFound } from "next/navigation";
 
-export default function TrainingRecordDetail() {
-  const params = useParams();
-  const router = useRouter();
-  const { getTrainingRecord } = useTraining();
-  const [record, setRecord] = useState<TrainingRecord | undefined>(undefined);
-
-  useEffect(() => {
-    if (params.id) {
-      const foundRecord = getTrainingRecord(params.id as string);
-      setRecord(foundRecord);
-
-      if (!foundRecord) {
-        console.log(`ID: ${params.id} のトレーニング記録が見つかりません`);
-        router.push("/");
-      }
-    }
-  }, [params.id, getTrainingRecord, router]);
+export default async function TrainingRecordDetail({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const record = await getTrainingRecord(params.id);
 
   if (!record) {
-    return (
-      <div className={styles.page}>
-        <main className={styles.main}>
-          <p>読み込み中...</p>
-        </main>
-      </div>
-    );
+    console.log(`ID: ${params.id} のトレーニング記録が見つかりません`);
+    notFound();
   }
 
   return (
