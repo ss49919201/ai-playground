@@ -1,0 +1,42 @@
+name: Run Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'typescript/training-api/**'
+  push:
+    branches: [ main ]
+    paths:
+      - 'typescript/training-api/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./typescript/training-api
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: './typescript/training-api/package-lock.json'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: ./typescript/training-api/coverage
+          retention-days: 7
