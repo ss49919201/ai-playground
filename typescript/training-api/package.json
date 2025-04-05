@@ -1,0 +1,33 @@
+{
+  "name": "training-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create training_records",
+    "db:migrate": "wrangler d1 execute training_records --file=./src/db/schema.sql",
+    "db:seed": "wrangler d1 execute training_records --file=./src/db/seed.sql"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@hono/zod-validator": "^0.4.3",
+    "@types/node": "^22.14.0",
+    "bcryptjs": "^3.0.2",
+    "hono": "^4.7.5",
+    "swagger-ui-dist": "^5.20.6",
+    "typescript": "^5.8.3",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250405.0",
+    "@types/bcryptjs": "^2.4.6",
+    "wrangler": "^4.7.2"
+  },
+  "type": "module"
+}

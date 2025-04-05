@@ -1,0 +1,20 @@
+name = "training-api"
+main = "src/index.ts"
+compatibility_date = "2023-01-01"
+
+[build]
+command = "npm run build"
+
+[dev]
+port = 8787
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "training_records"
+database_id = "xxxx-xxxx-xxxx-xxxx-xxxx" # Replace with your database ID when deploying
+
+# Environment variables
+# JWT_SECRET should be set in the Cloudflare dashboard or using .dev.vars for local development
+# Example .dev.vars file:
+# JWT_SECRET=your-secret-key
