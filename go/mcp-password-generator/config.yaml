@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+generator:
+  defaultLength: 12
+  minLength: 8
+  maxLength: 64
+  useUppercase: true
+  useLowercase: true
+  useDigits: true
+  useSpecial: true
+
+mcp:
+  requireConsent: true
