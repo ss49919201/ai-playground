@@ -8,22 +8,17 @@ import (
 )
 
 type Config struct {
-	Server     ServerConfig     `yaml:"server"`
-	Generator  GeneratorConfig  `yaml:"generator"`
-}
-
-type ServerConfig struct {
-	Port int `yaml:"port"`
+	Generator GeneratorConfig `yaml:"generator"`
 }
 
 type GeneratorConfig struct {
-	DefaultLength  int  `yaml:"defaultLength"`
-	MinLength      int  `yaml:"minLength"`
-	MaxLength      int  `yaml:"maxLength"`
-	UseUppercase   bool `yaml:"useUppercase"`
-	UseLowercase   bool `yaml:"useLowercase"`
-	UseDigits      bool `yaml:"useDigits"`
-	UseSpecial     bool `yaml:"useSpecial"`
+	DefaultLength int  `yaml:"defaultLength"`
+	MinLength     int  `yaml:"minLength"`
+	MaxLength     int  `yaml:"maxLength"`
+	UseUppercase  bool `yaml:"useUppercase"`
+	UseLowercase  bool `yaml:"useLowercase"`
+	UseDigits     bool `yaml:"useDigits"`
+	UseSpecial    bool `yaml:"useSpecial"`
 }
 
 func Load(path string) (*Config, error) {
@@ -45,10 +40,6 @@ func Load(path string) (*Config, error) {
 }
 
 func validate(cfg *Config) error {
-	if cfg.Server.Port <= 0 || cfg.Server.Port > 65535 {
-		return fmt.Errorf("invalid port number: %d", cfg.Server.Port)
-	}
-
 	if cfg.Generator.MinLength < 1 {
 		return fmt.Errorf("minimum password length must be at least 1")
 	}
@@ -61,8 +52,8 @@ func validate(cfg *Config) error {
 		return fmt.Errorf("default password length must be between min and max length")
 	}
 
-	if !cfg.Generator.UseUppercase && !cfg.Generator.UseLowercase && 
-	   !cfg.Generator.UseDigits && !cfg.Generator.UseSpecial {
+	if !cfg.Generator.UseUppercase && !cfg.Generator.UseLowercase &&
+		!cfg.Generator.UseDigits && !cfg.Generator.UseSpecial {
 		return fmt.Errorf("at least one character type must be enabled")
 	}
 
