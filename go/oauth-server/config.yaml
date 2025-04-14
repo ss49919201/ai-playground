@@ -1,0 +1,23 @@
+# OAuth 2.0 Server Configuration
+
+server:
+  port: 8080
+  # tlsCertFile: cert.pem # Enable TLS by providing cert and key files
+  # tlsKeyFile: key.pem
+
+token:
+  # Lifetimes for different token types
+  accessTokenLifetime: 1h       # Example: 1 hour
+  refreshTokenLifetime: 720h    # Example: 30 days (30 * 24h)
+  authCodeLifetime: 10m       # Example: 10 minutes
+
+# storage: # Optional: Configuration for different storage backends
+#   type: memory # or file, database
+#   # file:
+#   #   path: /path/to/storage.db
+#   # database:
+#   #   dsn: "user:password@tcp(127.0.0.1:3306)/dbname?parseTime=true"
+
+# crypto: # Optional: Configuration for cryptographic keys (e.g., for JWT)
+#   jwtSigningKeyFile: signing-key.pem
+#   jwtIssuer: "my-oauth-server"
