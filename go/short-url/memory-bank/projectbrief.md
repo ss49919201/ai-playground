@@ -10,6 +10,7 @@ This project aims to create a simple URL shortening service using Go. The server
 - **Redirection:** Accept a request to a short URL path (e.g., GET /{shortID}) and redirect the user to the corresponding original long URL using an HTTP 301 or 302 redirect.
 - **Persistence:** Store the mapping between short IDs and long URLs. Initially, an in-memory store will be used for simplicity.
 - **Unique ID Generation:** Implement a mechanism to generate unique and reasonably short identifiers for the URLs.
+- **Web Interface:** Provide a simple web page for users to shorten URLs via a form.
 
 ## 3. Goals
 
@@ -24,7 +25,7 @@ This project aims to create a simple URL shortening service using Go. The server
 - Simple short ID generation (e.g., random string or counter-based).
 - No user authentication or management features.
 - Minimal error handling.
-- No UI/frontend.
+- Basic Web UI (HTML, CSS, JS) for shortening.
 
 ## 5. Target Directory
 

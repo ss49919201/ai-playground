@@ -2,8 +2,9 @@
 
 ## 1. Language & Runtime
 
-- **Language:** Go (latest stable version recommended)
-- **Runtime:** Go runtime environment
+- **Language (Backend):** Go (latest stable version recommended)
+- **Language (Frontend):** HTML, CSS, JavaScript (ES6)
+- **Runtime:** Go runtime environment, Web Browser
 
 ## 2. Key Dependencies
 
@@ -16,6 +17,7 @@
   - `net/url`: For basic URL validation.
   - `strings`: For string manipulation (trimming path prefix).
 - **External Dependencies:** None currently.
+- **Frontend:** Vanilla JavaScript `fetch` API for interacting with the backend.
 
 ## 3. Development Setup
 

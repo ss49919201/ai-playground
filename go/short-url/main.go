@@ -18,11 +18,29 @@ func main() {
 	store := NewInMemoryURLStore()
 	app := &App{store: store}
 
+	// File server for the 'static' directory
+	fs := http.FileServer(http.Dir("./static"))
+
+	// Serve static files (CSS, JS, images etc.) from /static/ path
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	// Serve index.html at the root path "/"
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// If the path is exactly "/", serve index.html from the static dir
+		if r.URL.Path == "/" {
+			http.ServeFile(w, r, "./static/index.html")
+			return
+		}
+		// Otherwise, try to serve as a short URL redirect
+		app.handleRedirect(w, r)
+	})
+
+	// API endpoint for shortening
 	http.HandleFunc("/shorten", app.handleShorten)
-	http.HandleFunc("/", app.handleRedirect)
+	// Note: The redirect handler is now part of the "/" handler logic above.
 
 	port := ":8080"
-	fmt.Printf("Server starting on port %s\n", port)
+	fmt.Printf("Server starting on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }
 
@@ -68,14 +86,21 @@ func (app *App) handleShorten(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleRedirect handles requests to redirect short URLs to original URLs.
+// This is now called by the main "/" handler if the path is not "/".
 func (app *App) handleRedirect(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/" || r.URL.Path == "/shorten" {
-		// Handle root or the shorten path itself if needed, or return 404/specific page
+	// Basic check to avoid trying to redirect favicon.ico etc. as short IDs
+	// A more robust check might involve validating the ID format.
+	if r.URL.Path == "/favicon.ico" {
 		http.NotFound(w, r)
 		return
 	}
 
 	id := strings.TrimPrefix(r.URL.Path, "/")
+	if id == "" { // Should not happen if called from "/" handler correctly
+		http.NotFound(w, r)
+		return
+	}
+
 	longURL, ok := app.store.Get(id)
 	if !ok {
 		http.NotFound(w, r)
