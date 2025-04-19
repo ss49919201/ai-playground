@@ -9,7 +9,13 @@
 		"lint": "next lint",
 		"deploy": "opennextjs-cloudflare && wrangler deploy",
 		"preview": "opennextjs-cloudflare && wrangler dev",
-		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+		"d1:create": "wrangler d1 create tr_note_db",
+		"d1:migrations:generate": "wrangler d1 migrations generate tr_note_db",
+		"d1:migrations:apply": "wrangler d1 migrations apply tr_note_db",
+		"d1:migrations:apply:local": "wrangler d1 migrations apply tr_note_db --local",
+		"d1:execute": "wrangler d1 execute tr_note_db",
+		"d1:execute:local": "wrangler d1 execute tr_note_db --local"
 	},
 	"dependencies": {
 		"next": "15.2.4",

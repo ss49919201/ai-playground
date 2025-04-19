@@ -6,12 +6,14 @@ import { notFound } from "next/navigation";
 export default async function TrainingRecordDetail({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const record = await getTrainingRecord(params.id);
+  // Properly await params before accessing properties
+  const { id } = await params;
+  const record = await getTrainingRecord(id);
 
   if (!record) {
-    console.log(`ID: ${params.id} のトレーニング記録が見つかりません`);
+    console.log(`ID: ${id} のトレーニング記録が見つかりません`);
     notFound();
   }
 
