@@ -18,6 +18,9 @@
 		"d1:execute:local": "wrangler d1 execute tr_note_db --local"
 	},
 	"dependencies": {
+		"@auth/core": "^0.39.0",
+		"@auth/d1-adapter": "^1.9.0",
+		"bcrypt": "^5.1.1",
 		"next": "15.2.4",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
@@ -26,6 +29,7 @@
 		"@cloudflare/workers-types": "^4.20250327.0",
 		"@eslint/eslintrc": "^3",
 		"@opennextjs/cloudflare": "^0.5.12",
+		"@types/bcrypt": "^5.0.2",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
