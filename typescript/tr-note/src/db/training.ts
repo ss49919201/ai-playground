@@ -4,6 +4,25 @@ import { Exercise, Set, TrainingRecord } from "../types";
 import { getDB, generateId, getCurrentISOString } from "./index";
 
 /**
+ * トレーニング記録の所有者かどうかを検証する
+ */
+export async function verifyTrainingRecordOwnership(
+  trainingRecordId: string, 
+  userId: string
+): Promise<boolean> {
+  const db = await getDB();
+  
+  const record = await db.prepare(
+    `SELECT id FROM training_records
+     WHERE id = ? AND user_id = ?`
+  )
+  .bind(trainingRecordId, userId)
+  .first<{ id: string }>();
+  
+  return record !== null;
+}
+
+/**
  * トレーニング記録を追加する
  */
 export async function addTrainingRecord(
@@ -21,11 +40,12 @@ export async function addTrainingRecord(
   };
   
   await db.prepare(
-    `INSERT INTO training_records (id, date, title, description, created_at, updated_at) 
-     VALUES (?, ?, ?, ?, ?, ?)`
+    `INSERT INTO training_records (id, user_id, date, title, description, created_at, updated_at) 
+     VALUES (?, ?, ?, ?, ?, ?, ?)`
   )
   .bind(
     id,
+    record.userId,
     record.date,
     record.title,
     record.description,
@@ -45,18 +65,26 @@ export async function addTrainingRecord(
  * トレーニング記録を取得する
  */
 export async function getTrainingRecord(
-  id: string
+  id: string,
+  userId?: string
 ): Promise<TrainingRecord | undefined> {
   const db = await getDB();
   
-  // トレーニング記録を取得
-  const record = await db.prepare(
-    `SELECT id, date, title, description, created_at AS createdAt, updated_at AS updatedAt
-     FROM training_records
-     WHERE id = ?`
-  )
-  .bind(id)
-  .first<Omit<TrainingRecord, "exercises">>();
+  // トレーニング記録を取得（ユーザーIDが指定されている場合は所有権チェック）
+  let query = `SELECT id, user_id AS userId, date, title, description, created_at AS createdAt, updated_at AS updatedAt
+               FROM training_records
+               WHERE id = ?`;
+  
+  const params: any[] = [id];
+  
+  if (userId) {
+    query += ` AND user_id = ?`;
+    params.push(userId);
+  }
+  
+  const record = await db.prepare(query)
+    .bind(...params)
+    .first<Omit<TrainingRecord, "exercises">>();
   
   if (!record) {
     return undefined;
@@ -97,24 +125,26 @@ export async function getTrainingRecord(
 }
 
 /**
- * 全てのトレーニング記録を取得する
+ * ユーザーの全てのトレーニング記録を取得する
  */
-export async function getAllTrainingRecords(): Promise<TrainingRecord[]> {
+export async function getAllTrainingRecords(userId: string): Promise<TrainingRecord[]> {
   const db = await getDB();
   
-  // 全てのトレーニング記録を取得
+  // 指定ユーザーのトレーニング記録を取得
   const records = await db.prepare(
-    `SELECT id, date, title, description, created_at AS createdAt, updated_at AS updatedAt
+    `SELECT id, user_id AS userId, date, title, description, created_at AS createdAt, updated_at AS updatedAt
      FROM training_records
+     WHERE user_id = ?
      ORDER BY date DESC`
   )
+  .bind(userId)
   .all<Omit<TrainingRecord, "exercises">>();
   
   const trainingRecords: TrainingRecord[] = [];
   
   // 各トレーニング記録に対して、種目とセットを取得
   for (const record of records.results) {
-    const completeRecord = await getTrainingRecord(record.id);
+    const completeRecord = await getTrainingRecord(record.id, userId);
     if (completeRecord) {
       trainingRecords.push(completeRecord);
     }
@@ -126,15 +156,16 @@ export async function getAllTrainingRecords(): Promise<TrainingRecord[]> {
 /**
  * トレーニング記録を削除する
  */
-export async function deleteTrainingRecord(id: string): Promise<void> {
+export async function deleteTrainingRecord(id: string, userId: string): Promise<void> {
   const db = await getDB();
   
+  // 所有権チェック付きで削除（ユーザーIDが一致する場合のみ削除される）
   // カスケード削除が有効なので、トレーニング記録を削除するだけで関連する種目とセットも削除される
   await db.prepare(
     `DELETE FROM training_records
-     WHERE id = ?`
+     WHERE id = ? AND user_id = ?`
   )
-  .bind(id)
+  .bind(id, userId)
   .run();
   
   console.log(`ID: ${id} のトレーニング記録が削除されました`);
@@ -145,9 +176,23 @@ export async function deleteTrainingRecord(id: string): Promise<void> {
  */
 export async function addExerciseToRecord(
   recordId: string,
-  exercise: Omit<Exercise, "id">
+  exercise: Omit<Exercise, "id">,
+  userId: string
 ): Promise<void> {
   const db = await getDB();
+  
+  // 所有権チェック
+  const record = await db.prepare(
+    `SELECT id FROM training_records
+     WHERE id = ? AND user_id = ?`
+  )
+  .bind(recordId, userId)
+  .first<{ id: string }>();
+  
+  if (!record) {
+    throw new Error(`所有権がないか、トレーニング記録が存在しません。ID: ${recordId}`);
+  }
+  
   const exerciseId = await generateId();
   const timestamp = await getCurrentISOString();
   
@@ -185,9 +230,25 @@ export async function addExerciseToRecord(
 export async function addSetToExercise(
   recordId: string,
   exerciseId: string,
-  set: Omit<Set, "id">
+  set: Omit<Set, "id">,
+  userId: string
 ): Promise<void> {
   const db = await getDB();
+  
+  // 所有権チェック
+  const record = await db.prepare(
+    `SELECT tr.id 
+     FROM training_records tr
+     JOIN exercises ex ON tr.id = ex.training_record_id
+     WHERE tr.id = ? AND tr.user_id = ? AND ex.id = ?`
+  )
+  .bind(recordId, userId, exerciseId)
+  .first<{ id: string }>();
+  
+  if (!record) {
+    throw new Error(`所有権がないか、トレーニング記録または種目が存在しません。Record ID: ${recordId}, Exercise ID: ${exerciseId}`);
+  }
+  
   const setId = await generateId();
   const timestamp = await getCurrentISOString();
   
