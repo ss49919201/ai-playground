@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+            max-width: 500px;
+        }
+        input[type="url"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        #result a {
+            color: #007bff;
+            text-decoration: none;
+        }
+         #result a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    <form id="shortenForm">
+        <label for="longUrl">Enter URL to shorten:</label>
+        <input type="url" id="longUrl" name="url" required placeholder="https://example.com/very/long/url">
+        <button type="submit">Shorten</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById('shortenForm');
+        const resultDiv = document.getElementById('result');
+        const longUrlInput = document.getElementById('longUrl');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            resultDiv.textContent = 'Shortening...';
+            const longUrl = longUrlInput.value;
+
+            try {
+                const response = await fetch('/shorten', {
+                    method: 'POST',
+                    headers: {
+                        // Send as plain text, matching the current Go handler
+                        'Content-Type': 'text/plain',
+                    },
+                    body: longUrl
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Error: ${response.status} - ${errorText || 'Failed to shorten URL'}`);
+                }
+
+                const shortUrl = await response.text();
+                resultDiv.innerHTML = `Short URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
+                longUrlInput.value = ''; // Clear input field
+
+            } catch (error) {
+                console.error('Error shortening URL:', error);
+                resultDiv.textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

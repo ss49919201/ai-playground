@@ -2,4 +2,12 @@
 // by running `wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts`
 
 interface CloudflareEnv {
+  DB: D1Database;
+}
+
+// @opennextjs/cloudflare モジュールの型拡張
+declare module '@opennextjs/cloudflare' {
+  interface Env {
+    DB: D1Database;
+  }
 }
