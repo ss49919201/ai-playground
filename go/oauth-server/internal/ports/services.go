@@ -2,7 +2,7 @@ package ports
 
 import (
 	"time"
-	// "github.com/ss49919201/ai-kata/go/oauth-server/internal/domain" // 必要に応じて
+	// "github.com/ss49919201/ai-playground/go/oauth-server/internal/domain" // 必要に応じて
 )
 
 // --- 副作用を抽象化するインターフェース ---

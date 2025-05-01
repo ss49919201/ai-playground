@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/adapters/storage" // エラー型を参照するため
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/ports"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/adapters/storage" // エラー型を参照するため
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/ports"
 )
 
 // TokenService はトークンの発行、検証、失効に関連するユースケースを処理します。

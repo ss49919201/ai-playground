@@ -1,4 +1,4 @@
-module github.com/ss49919201/ai-kata/go/oauth-server
+module github.com/ss49919201/ai-playground/go/oauth-server
 
 go 1.24.0
 

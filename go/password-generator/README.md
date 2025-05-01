@@ -18,6 +18,7 @@ A secure password generation server implemented in Go.
 Generate a password using query parameters.
 
 **Query Parameters:**
+
 - `length`: Length of the password (default: configured default length)
 - `uppercase`: Include uppercase letters (true/false)
 - `lowercase`: Include lowercase letters (true/false)
@@ -25,6 +26,7 @@ Generate a password using query parameters.
 - `special`: Include special characters (true/false)
 
 **Example:**
+
 ```
 GET /api/v1/password?length=12&uppercase=true&lowercase=true&digits=true&special=false
 ```
@@ -34,6 +36,7 @@ GET /api/v1/password?length=12&uppercase=true&lowercase=true&digits=true&special
 Generate a password using JSON request body.
 
 **Request Body:**
+
 ```json
 {
   "length": 12,
@@ -45,6 +48,7 @@ Generate a password using JSON request body.
 ```
 
 **Response:**
+
 ```json
 {
   "password": "generated-password",
@@ -57,6 +61,7 @@ Generate a password using JSON request body.
 Health check endpoint.
 
 **Response:**
+
 ```json
 {
   "status": "ok"
@@ -89,12 +94,14 @@ generator:
 ### Installation
 
 1. Clone the repository
+
 ```bash
-git clone https://github.com/ss49919201/ai-kata.git
-cd ai-kata/go/password-generator
+git clone https://github.com/ss49919201/ai-playground.git
+cd ai-playground/go/password-generator
 ```
 
 2. Install dependencies
+
 ```bash
 go mod tidy
 ```

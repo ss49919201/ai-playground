@@ -368,8 +368,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/ports"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/ports"
 )
 
 // AuthService は認証と認可に関連するユースケースを処理する
@@ -551,8 +551,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/ports"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/ports"
 )
 
 // TokenService はトークンの発行、検証、失効に関連するユースケースを処理する
@@ -809,8 +809,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/ports"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/ports"
 )
 
 // ClientService はクライアントの登録や管理に関連するユースケースを処理する
@@ -937,7 +937,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
 )
 
 // --- リポジトリインターフェース ---
@@ -1027,8 +1027,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/app"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/app"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
 )
 
 // Server はHTTPサーバーの依存関係を保持する
@@ -1273,7 +1273,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
 )
 
 // InMemoryClientRepository は ClientRepository のインメモリ実装
@@ -1597,11 +1597,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/app"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/adapters/http"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/adapters/storage"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/config"
-	// crypto "github.com/ss49919201/ai-kata/go/oauth-server/pkg/crypto" // 仮
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/app"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/adapters/http"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/adapters/storage"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/config"
+	// crypto "github.com/ss49919201/ai-playground/go/oauth-server/pkg/crypto" // 仮
 )
 
 func main() {

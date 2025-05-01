@@ -10,8 +10,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/ss49919201/ai-kata/go/password-generator/internal/config"
-	"github.com/ss49919201/ai-kata/go/password-generator/pkg/generator"
+	"github.com/ss49919201/ai-playground/go/password-generator/internal/config"
+	"github.com/ss49919201/ai-playground/go/password-generator/pkg/generator"
 )
 
 type MCPRequest struct {

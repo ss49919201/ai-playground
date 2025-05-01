@@ -7,9 +7,9 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/adapters/storage" // エラー型を参照するため
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/ports"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/adapters/storage" // エラー型を参照するため
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/ports"
 )
 
 // AuthService は認証と認可に関連するユースケース（主に認可エンドポイント）を処理します。

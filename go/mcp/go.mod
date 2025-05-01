@@ -1,4 +1,4 @@
-module github.com/ss49919201/ai-kata/go/mcp
+module github.com/ss49919201/ai-playground/go/mcp
 
 go 1.24.0
 

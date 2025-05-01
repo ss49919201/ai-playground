@@ -3,7 +3,7 @@ package ports
 import (
 	"context"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
 )
 
 // ClientRepository はクライアント情報の永続化を抽象化するインターフェースです。

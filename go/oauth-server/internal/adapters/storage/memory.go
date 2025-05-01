@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
 )
 
 // --- エラー定義 ---

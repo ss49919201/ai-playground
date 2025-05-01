@@ -8,9 +8,9 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/adapters/storage"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/app"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/adapters/storage"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/app"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
 )
 
 // handleAuthorize は認可エンドポイント (`/oauth/authorize`) のリクエストを処理します。

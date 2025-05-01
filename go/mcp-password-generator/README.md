@@ -168,12 +168,14 @@ mcp:
 ### Installation
 
 1. Clone the repository
+
 ```bash
-git clone https://github.com/ss49919201/ai-kata.git
-cd ai-kata/go/mcp-password-generator
+git clone https://github.com/ss49919201/ai-playground.git
+cd ai-playground/go/mcp-password-generator
 ```
 
 2. Install dependencies
+
 ```bash
 go mod tidy
 ```

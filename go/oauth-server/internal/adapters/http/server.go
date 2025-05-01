@@ -3,7 +3,7 @@ package httpadapter
 import (
 	"net/http"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/app"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/app"
 )
 
 // Server はHTTPサーバーの依存関係とルーターを保持します。

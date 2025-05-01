@@ -5,9 +5,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/adapters/storage" // エラー型を参照するため
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/domain"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/ports"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/adapters/storage" // エラー型を参照するため
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/domain"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/ports"
 )
 
 // ClientService はクライアントの登録や管理に関連するユースケースを処理します。

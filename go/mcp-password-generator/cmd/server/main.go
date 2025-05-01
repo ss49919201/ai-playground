@@ -9,8 +9,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/ss49919201/ai-kata/go/mcp-password-generator/internal/config"
-	"github.com/ss49919201/ai-kata/go/mcp-password-generator/pkg/mcp"
+	"github.com/ss49919201/ai-playground/go/mcp-password-generator/internal/config"
+	"github.com/ss49919201/ai-playground/go/mcp-password-generator/pkg/mcp"
 )
 
 func main() {

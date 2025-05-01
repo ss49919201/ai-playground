@@ -1,4 +1,4 @@
-module github.com/ss49919201/ai-kata/go/mcp-password-generator
+module github.com/ss49919201/ai-playground/go/mcp-password-generator
 
 go 1.18
 

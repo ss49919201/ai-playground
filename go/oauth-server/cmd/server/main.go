@@ -11,10 +11,10 @@ import (
 	"syscall"
 	"time"
 
-	httpadapter "github.com/ss49919201/ai-kata/go/oauth-server/internal/adapters/http" // エイリアスを使用
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/adapters/storage"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/app"
-	"github.com/ss49919201/ai-kata/go/oauth-server/internal/config"
+	httpadapter "github.com/ss49919201/ai-playground/go/oauth-server/internal/adapters/http" // エイリアスを使用
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/adapters/storage"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/app"
+	"github.com/ss49919201/ai-playground/go/oauth-server/internal/config"
 )
 
 func main() {

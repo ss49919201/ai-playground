@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/ss49919201/ai-kata/go/mcp-password-generator/internal/config"
+	"github.com/ss49919201/ai-playground/go/mcp-password-generator/internal/config"
 )
 
 type Server struct {
