@@ -1,0 +1,56 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# MCP Password Generator Architecture
+
+This project implements a JSON-RPC 2.0 server that provides a password generation tool through a Machine Callable Program (MCP) interface.
+
+## Core Components
+
+### Server Implementation
+The core server implementation is in [pkg/mcp/server.go](mdc:go/mcp-password-generator/pkg/mcp/server.go). The `Server` struct handles:
+- HTTP request processing
+- JSON-RPC message parsing
+- Tool registration and management
+- Method routing
+
+### Type Definitions
+Common types and interfaces are defined in [pkg/mcp/types.go](mdc:go/mcp-password-generator/pkg/mcp/types.go), including:
+- JSON-RPC request/response structures
+- Error types and codes
+- Tool registration types
+
+### Password Generator Tool
+The password generation tool implementation is in [pkg/mcp/password_tool.go](mdc:go/mcp-password-generator/pkg/mcp/password_tool.go). Key features:
+- Tool registration with schema definition
+- Input parameter validation
+- Password generation logic
+- Formatted output generation
+
+## Design Patterns
+
+1. **Dependency Injection**
+   - Configuration is injected through the `config.Config` struct
+   - Tool implementations are registered with the server
+
+2. **Handler Pattern**
+   - Methods are mapped to handlers via the `MethodHandler` type
+   - Each tool implements its own handler function
+
+3. **Thread Safety**
+   - Mutex protection for shared resources (tools map, consent map)
+   - Read/Write locks for concurrent access
+
+4. **Error Handling**
+   - Structured error types following JSON-RPC 2.0 spec
+   - Error codes for different failure scenarios
+   - Error data inclusion for debugging
+
+## Tool Registration Flow
+1. Server is initialized with configuration
+2. Tools are registered with their schemas
+3. Tool handlers are mapped to execution functions
+4. Requests are validated against registered schemas
+5. Tool execution is delegated to specific handlers
