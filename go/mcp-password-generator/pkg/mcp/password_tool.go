@@ -66,7 +66,7 @@ func RegisterPasswordGeneratorTool(server *Server, cfg *config.Config) {
 		},
 	})
 
-	server.executePasswordGenerator = func(input json.RawMessage) (interface{}, *Error) {
+	server.passwordGeneratorHandler = func(input json.RawMessage) (interface{}, *Error) {
 		return executePasswordGenerator(input, cfg)
 	}
 }

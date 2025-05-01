@@ -11,12 +11,13 @@ import (
 )
 
 type Server struct {
-	config      *config.Config
-	tools       map[string]Tool
-	toolsMutex  sync.RWMutex
-	handlers    map[string]MethodHandler
-	consentMap  map[string]bool
-	consentLock sync.RWMutex
+	config                   *config.Config
+	tools                    map[string]Tool
+	toolsMutex               sync.RWMutex
+	handlers                 map[string]MethodHandler
+	consentMap               map[string]bool
+	consentLock              sync.RWMutex
+	passwordGeneratorHandler func(input json.RawMessage) (interface{}, *Error)
 }
 
 type MethodHandler func(params json.RawMessage) (interface{}, *Error)
@@ -102,7 +103,7 @@ func (s *Server) handleToolsCall(params json.RawMessage) (interface{}, *Error) {
 	}
 
 	s.toolsMutex.RLock()
-	tool, ok := s.tools[p.Name]
+	_, ok := s.tools[p.Name]
 	s.toolsMutex.RUnlock()
 	if !ok {
 		return nil, NewError(ToolNotFound, fmt.Sprintf("Tool '%s' not found", p.Name), nil)
@@ -116,14 +117,10 @@ func (s *Server) handleToolsCall(params json.RawMessage) (interface{}, *Error) {
 
 	switch p.Name {
 	case "generate_password":
-		return s.executePasswordGenerator(p.Input)
+		return s.passwordGeneratorHandler(p.Input)
 	default:
 		return nil, NewError(ToolExecutionFail, fmt.Sprintf("Tool '%s' execution not implemented", p.Name), nil)
 	}
-}
-
-func (s *Server) executePasswordGenerator(input json.RawMessage) (interface{}, *Error) {
-	return nil, NewError(InternalError, "Not implemented", nil)
 }
 
 func writeResponse(w http.ResponseWriter, resp *Response) {

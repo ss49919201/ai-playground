@@ -28,6 +28,10 @@ type Error struct {
 	Data    interface{} `json:"data,omitempty"`
 }
 
+func (e *Error) Error() string {
+	return e.Message
+}
+
 type ErrorCode int
 
 const (
@@ -58,9 +62,9 @@ type ToolsListResult struct {
 }
 
 type ToolsCallParams struct {
-	Name   string          `json:"name"`
-	Input  json.RawMessage `json:"input"`
-	Consent *bool          `json:"consent,omitempty"`
+	Name    string          `json:"name"`
+	Input   json.RawMessage `json:"input"`
+	Consent *bool           `json:"consent,omitempty"`
 }
 
 type TextContent struct {
@@ -73,7 +77,7 @@ type ToolResult struct {
 	Content []interface{} `json:"content"`
 }
 
-func NewResponse(id interface{}, result interface{}, err *Error) (*Response, error) {
+func NewResponse(id interface{}, result interface{}, err error) (*Response, error) {
 	var rawResult json.RawMessage
 	if result != nil {
 		var marshalErr error
@@ -83,10 +87,18 @@ func NewResponse(id interface{}, result interface{}, err *Error) (*Response, err
 		}
 	}
 
+	var jsonRPCError *Error
+	if err != nil {
+		jsonRPCError = &Error{
+			Code:    int(InternalError),
+			Message: err.Error(),
+		}
+	}
+
 	return &Response{
 		JSONRPC: JSONRPCVersion,
 		Result:  rawResult,
-		Error:   err,
+		Error:   jsonRPCError,
 		ID:      id,
 	}, nil
 }
