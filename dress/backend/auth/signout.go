@@ -1,6 +1,6 @@
 package auth
 
-func Logout(token string) error {
+func Signout(token string) error {
 	deleteToken(token)
 	return nil
 }

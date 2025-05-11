@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ss49919201/ai-kata/dress/backend/auth"
 )
 
 func main() {
@@ -29,22 +30,48 @@ func NewServer() *Sever {
 
 	// signup
 	apiV1Group.POST("/signup", func(c *gin.Context) {
+		if _, err := auth.Signup(
+			c.PostForm("email"),
+			c.PostForm("password"),
+		); err != nil {
+			c.JSON(500, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
 		c.JSON(200, gin.H{
-			"message": "signup",
+			"msg": "ok",
 		})
 	})
 
-	// login
-	apiV1Group.POST("/login", func(c *gin.Context) {
+	// signin
+	apiV1Group.POST("/signin", func(c *gin.Context) {
+		if _, err := auth.Signin(
+			c.PostForm("email"),
+			c.PostForm("password"),
+		); err != nil {
+			c.JSON(500, gin.H{
+				"error": "failed to signin",
+			})
+			return
+		}
 		c.JSON(200, gin.H{
-			"message": "login",
+			"msg": "ok",
 		})
 	})
 
-	// logout
-	apiV1Group.POST("/logout", func(c *gin.Context) {
+	// signout
+	apiV1Group.POST("/signout", func(c *gin.Context) {
+		if err := auth.Signout(
+			c.PostForm("token"),
+		); err != nil {
+			c.JSON(500, gin.H{
+				"error": "failed to signout",
+			})
+			return
+		}
 		c.JSON(200, gin.H{
-			"message": "logout",
+			"msg": "ok",
 		})
 	})
 
@@ -59,18 +86,18 @@ func NewServer() *Sever {
 	)
 
 	// threads
-	threads := apiGroupWithAuth.Group("/threads")
-	threads.GET("/", func(c *gin.Context) {
+	threadsApi := apiGroupWithAuth.Group("/threads")
+	threadsApi.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "threads",
+			"msg": "ok",
 		})
 	})
-	threads.POST("", func(c *gin.Context) {
+	threadsApi.POST("", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"id": "1",
 		})
 	})
-	threads.GET("/:id/posts", func(c *gin.Context) {
+	threadsApi.GET("/:id/posts", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"id": c.Param("id"),
 			"posts": []string{
@@ -79,7 +106,7 @@ func NewServer() *Sever {
 			},
 		})
 	})
-	threads.POST("/:id/posts", func(c *gin.Context) {
+	threadsApi.POST("/:id/posts", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"id":   c.Param("id"),
 			"post": "post",
