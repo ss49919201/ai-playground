@@ -22,6 +22,7 @@ func TestAPIEndpoints(t *testing.T) {
 		{"login", "POST", "/api/v1/login", 200},
 		{"logout", "POST", "/api/v1/logout", 200},
 		{"threads GET", "GET", "/api/v1/threads/123", 200},
+		{"threads GET", "GET", "/api/v1/threads", 200},
 		{"threads POST", "POST", "/api/v1/threads", 200},
 	}
 	client := &http.Client{}

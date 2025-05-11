@@ -60,14 +60,29 @@ func NewServer() *Sever {
 
 	// threads
 	threads := apiGroupWithAuth.Group("/threads")
-	threads.GET("/:id", func(c *gin.Context) {
+	threads.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"id": c.Param("id"),
+			"message": "threads",
 		})
 	})
 	threads.POST("", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"id": "1",
+		})
+	})
+	threads.GET("/:id/posts", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"id": c.Param("id"),
+			"posts": []string{
+				"post1",
+				"post2",
+			},
+		})
+	})
+	threads.POST("/:id/posts", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"id":   c.Param("id"),
+			"post": "post",
 		})
 	})
 
