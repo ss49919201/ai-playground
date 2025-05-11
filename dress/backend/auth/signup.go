@@ -29,11 +29,17 @@ func Signup(
 
 	defer mysqlClient.Close()
 
-	if _, err := mysqlClient.Exec(
+	result, err := mysqlClient.Exec(
 		"INSERT INTO users (email, password) VALUES (?, ?)",
 		email,
 		password,
-	); err != nil {
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	lastInsertId, err := result.LastInsertId()
+	if err != nil {
 		return nil, err
 	}
 
@@ -43,7 +49,7 @@ func Signup(
 	}
 	if _, err := mysqlClient.Exec(
 		"INSERT INTO user_password_authentications (user_id, password) VALUES (?, ?)",
-		1,
+		lastInsertId,
 		hashedPassword,
 	); err != nil {
 		return nil, err
