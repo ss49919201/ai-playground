@@ -8,7 +8,7 @@ services:
       MYSQL_USER: dress
       MYSQL_PASSWORD: dresspassword
     ports:
-      - "127.0.0.1:3306:3306"
+      - "127.0.0.1:${MYSQL_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 volumes:
