@@ -1,22 +1,23 @@
 package auth
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/ss49919201/ai-kata/dress/backend/database/mysql"
 	"golang.org/x/crypto/bcrypt"
 )
 
-type SignupResponse struct {
+type SigninResponse struct {
 	Token     string
 	ExpiresAt int64
 }
 
-// Signup は、ユーザーを新規登録します。
-func Signup(
+// Signin は、ユーザーを認証します。
+func Signin(
 	email, password string,
 ) (
-	*SignupResponse,
+	*SigninResponse,
 	error,
 ) {
 	mysqlClient, err := mysql.NewClient(
@@ -31,28 +32,25 @@ func Signup(
 
 	defer mysqlClient.Close()
 
-	// usersテーブルにINSERT
-	if _, err := mysqlClient.Exec(
-		"INSERT INTO users (email, password) VALUES (?, ?)",
+	var hashedPassword string
+	if err := mysqlClient.QueryRow(
+		"SELECT user_password_authentications.password FROM users INNER JOIN user_password_authentications ON users.id = user_password_authentications.user_id WHERE users.email = ?",
 		email,
-		password,
+	).Scan(
+		&hashedPassword,
 	); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, NewErrAuthenticationFailure(err)
+		}
+
 		return nil, err
 	}
 
-	// パスワードをハッシュ化
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return nil, err
-	}
-
-	// user_password_authenticationsテーブルにINSERT
-	if _, err := mysqlClient.Exec(
-		"INSERT INTO user_password_authentications (user_id, password) VALUES (?, ?)",
-		1,
-		hashedPassword,
+	if err := bcrypt.CompareHashAndPassword(
+		[]byte(hashedPassword),
+		[]byte(password),
 	); err != nil {
-		return nil, err
+		return nil, NewErrAuthenticationFailure(err)
 	}
 
 	// Cookie に保存するトークンを生成
@@ -62,7 +60,7 @@ func Signup(
 
 	// TODO: トークンをメモリに保存
 
-	return &SignupResponse{
+	return &SigninResponse{
 		Token:     token,
 		ExpiresAt: expiresAt,
 	}, nil
