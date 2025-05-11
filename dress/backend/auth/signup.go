@@ -1,8 +1,6 @@
 package auth
 
 import (
-	"time"
-
 	"github.com/ss49919201/ai-kata/dress/backend/database/mysql"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -56,11 +54,8 @@ func Signup(
 	}
 
 	// Cookie に保存するトークンを生成
-	// TODO: トークンは UUID V4
-	token := "token"
-	expiresAt := time.Now().Add(time.Hour * 24).Unix()
-
-	// TODO: トークンをメモリに保存
+	token, expiresAt := generateToken()
+	saveToken(token, expiresAt)
 
 	return &SignupResponse{
 		Token:     token,
