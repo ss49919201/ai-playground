@@ -20,3 +20,7 @@ func saveToken(token string, expiresAt int64) {
 func loadToken(token string) (string, error) {
 	return ttlcache.Load(token)
 }
+
+func deleteToken(token string) {
+	ttlcache.Delete(token)
+}

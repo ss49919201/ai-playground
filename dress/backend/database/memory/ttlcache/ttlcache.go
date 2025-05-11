@@ -8,18 +8,24 @@ import (
 	"github.com/jellydator/ttlcache/v3"
 )
 
-var newCacheStoreString = sync.OnceValue(func() *ttlcache.Cache[string, string] {
-	c := ttlcache.New[string, string]()
+var cacheStore = sync.OnceValue(func() *ttlcache.Cache[string, string] {
+	c := ttlcache.New[string, string](
+		ttlcache.WithDisableTouchOnHit[string, string](),
+	)
 	go c.Start()
 	return c
 })
 
 func Set(k string, v string, ttl time.Duration) {
-	newCacheStoreString().Set(k, v, ttl)
+	cacheStore().Set(k, v, ttl)
+}
+
+func Delete(k string) {
+	cacheStore().Delete(k)
 }
 
 func Load(k string) (string, error) {
-	item := newCacheStoreString().Get(k)
+	item := cacheStore().Get(k)
 	if item == nil {
 		return "", errors.New("not found")
 	}
