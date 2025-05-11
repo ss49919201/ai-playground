@@ -52,7 +52,6 @@ func Signin(
 		return nil, NewErrAuthenticationFailure(err)
 	}
 
-	// Cookie に保存するトークンを生成
 	token, expiresAt := generateToken()
 	saveToken(token, expiresAt)
 

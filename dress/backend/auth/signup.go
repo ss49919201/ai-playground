@@ -29,7 +29,6 @@ func Signup(
 
 	defer mysqlClient.Close()
 
-	// usersテーブルにINSERT
 	if _, err := mysqlClient.Exec(
 		"INSERT INTO users (email, password) VALUES (?, ?)",
 		email,
@@ -38,13 +37,10 @@ func Signup(
 		return nil, err
 	}
 
-	// パスワードをハッシュ化
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
 	}
-
-	// user_password_authenticationsテーブルにINSERT
 	if _, err := mysqlClient.Exec(
 		"INSERT INTO user_password_authentications (user_id, password) VALUES (?, ?)",
 		1,
@@ -53,7 +49,6 @@ func Signup(
 		return nil, err
 	}
 
-	// Cookie に保存するトークンを生成
 	token, expiresAt := generateToken()
 	saveToken(token, expiresAt)
 
