@@ -1,0 +1,30 @@
+# Simple RAG Configuration
+server:
+  port: 8080
+  host: "localhost"
+
+embedding:
+  # sentence-transformers server endpoint
+  url: "http://localhost:8000"
+  model: "all-MiniLM-L6-v2"
+  batch_size: 32
+
+llm:
+  # Ollama configuration
+  url: "http://localhost:11434"
+  model: "llama2"
+  temperature: 0.7
+  max_tokens: 512
+
+document:
+  chunk_size: 512
+  chunk_overlap: 50
+  supported_formats: ["txt", "pdf", "docx"]
+
+vector_db:
+  storage_path: "./data/vectors"
+  similarity_threshold: 0.7
+
+logging:
+  level: "info"
+  output: "stdout"
