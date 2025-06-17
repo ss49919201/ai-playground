@@ -1,0 +1,29 @@
+Machine Learning Fundamentals
+
+Machine Learning (ML) is a subset of artificial intelligence that enables computers to learn and make decisions from data without being explicitly programmed for every task. It's a powerful technology that has transformed various industries and aspects of our daily lives.
+
+Types of Machine Learning:
+
+1. Supervised Learning
+Supervised learning uses labeled training data to learn a mapping from inputs to outputs. The algorithm is trained on a dataset where both the input and the correct output are provided.
+- Examples: Classification, Regression
+- Algorithms: Linear Regression, Decision Trees, Random Forest, Support Vector Machines
+
+2. Unsupervised Learning
+Unsupervised learning finds hidden patterns in data without labeled examples. The algorithm must discover structures in the data on its own.
+- Examples: Clustering, Dimensionality Reduction
+- Algorithms: K-means, Hierarchical Clustering, Principal Component Analysis (PCA)
+
+3. Reinforcement Learning
+Reinforcement learning learns through interaction with an environment, receiving rewards or penalties for actions taken.
+- Examples: Game playing, Robot control, Autonomous vehicles
+- Algorithms: Q-learning, Policy Gradient Methods
+
+Key Concepts:
+- Training Data: The dataset used to train the model
+- Features: Individual measurable properties of observed phenomena
+- Model: The mathematical representation of a real-world process
+- Overfitting: When a model learns the training data too specifically and fails to generalize
+- Cross-validation: Technique for assessing model performance on unseen data
+
+Machine learning applications are everywhere: recommendation systems, image recognition, natural language processing, fraud detection, and autonomous systems. The field continues to evolve rapidly with new techniques and applications being developed constantly.
