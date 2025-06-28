@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"yesql-account-system/internal/account"
+	"yesql-account-system/internal/auth"
 	"yesql-account-system/internal/db"
 	"yesql-account-system/internal/yesql"
 
@@ -30,17 +31,29 @@ func main() {
 	}
 
 	accountService := account.NewService(database.GetConn(), loader)
-	handler := NewHandler(accountService)
+	authService := auth.NewService(database.GetConn(), loader)
+	handler := NewHandler(accountService, authService)
+
+	authMiddleware := auth.NewMiddleware(authService)
 
 	r := mux.NewRouter()
 	
-	r.HandleFunc("/accounts", handler.CreateAccount).Methods("POST")
-	r.HandleFunc("/accounts", handler.ListAccounts).Methods("GET")
-	r.HandleFunc("/accounts/{id}", handler.GetAccount).Methods("GET")
-	r.HandleFunc("/accounts/{id}/transactions", handler.GetAccountTransactions).Methods("GET")
-	r.HandleFunc("/deposit", handler.Deposit).Methods("POST")
-	r.HandleFunc("/withdraw", handler.Withdraw).Methods("POST")
-	r.HandleFunc("/transfer", handler.Transfer).Methods("POST")
+	// Auth routes (no authentication required)
+	r.HandleFunc("/auth/register", handler.Register).Methods("POST")
+	r.HandleFunc("/auth/login", handler.Login).Methods("POST")
+	
+	// Protected routes
+	protected := r.PathPrefix("/api").Subrouter()
+	protected.Use(authMiddleware.RequireAuth)
+	
+	protected.HandleFunc("/logout", handler.Logout).Methods("POST")
+	protected.HandleFunc("/accounts", handler.CreateAccount).Methods("POST")
+	protected.HandleFunc("/accounts", handler.GetUserAccounts).Methods("GET")
+	protected.HandleFunc("/accounts/{id}", handler.GetAccount).Methods("GET")
+	protected.HandleFunc("/accounts/{id}/transactions", handler.GetAccountTransactions).Methods("GET")
+	protected.HandleFunc("/deposit", handler.Deposit).Methods("POST")
+	protected.HandleFunc("/withdraw", handler.Withdraw).Methods("POST")
+	protected.HandleFunc("/transfer", handler.Transfer).Methods("POST")
 
 	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

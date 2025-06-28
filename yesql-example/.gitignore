@@ -1,1 +1,4 @@
-bin
+bin/
+*.db
+.env
+.DS_Store
