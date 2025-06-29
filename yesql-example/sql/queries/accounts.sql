@@ -21,3 +21,13 @@ WHERE account_id = ?;
 SELECT account_id, account_name, balance, created_at, updated_at
 FROM accounts
 ORDER BY created_at;
+
+-- name: deposit_update_balance
+UPDATE accounts 
+SET balance = balance + ?, updated_at = CURRENT_TIMESTAMP
+WHERE account_id = ?;
+
+-- name: deposit_create_transaction
+INSERT INTO transactions (transaction_id, from_account, to_account, transaction_type, amount, description)
+VALUES (?, NULL, ?, 'deposit', ?, ?)
+RETURNING transaction_id, from_account, to_account, transaction_type, amount, description, created_at;

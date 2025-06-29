@@ -92,37 +92,40 @@ func (s *Service) Deposit(req DepositRequest) (*Transaction, error) {
 	}
 	defer tx.Rollback()
 
-	balanceQuery, err := s.loader.GetQuery("get_account_balance")
+	updateQuery, err := s.loader.GetQuery("deposit_update_balance")
 	if err != nil {
-		return nil, fmt.Errorf("failed to get get_account_balance query: %w", err)
+		return nil, fmt.Errorf("failed to get deposit_update_balance query: %w", err)
 	}
 
-	var currentBalance float64
-	err = tx.QueryRow(balanceQuery, req.AccountID).Scan(&currentBalance)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get current balance: %w", err)
-	}
-	
-
-	newBalance := currentBalance + req.Amount
-
-	updateQuery, err := s.loader.GetQuery("update_account_balance")
-	if err != nil {
-		return nil, fmt.Errorf("failed to get update_account_balance query: %w", err)
-	}
-
-	_, err = tx.Exec(updateQuery, newBalance, req.AccountID)
+	result, err := tx.Exec(updateQuery, req.Amount, req.AccountID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update balance: %w", err)
 	}
 
-	transactionID := uuid.New().String()
-	createTxQuery, err := s.loader.GetQuery("create_transaction")
+	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return nil, fmt.Errorf("failed to get create_transaction query: %w", err)
+		return nil, fmt.Errorf("failed to get rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return nil, fmt.Errorf("account not found")
 	}
 
-	_, err = tx.Exec(createTxQuery, transactionID, nil, req.AccountID, "deposit", req.Amount, req.Description)
+	createTxQuery, err := s.loader.GetQuery("deposit_create_transaction")
+	if err != nil {
+		return nil, fmt.Errorf("failed to get deposit_create_transaction query: %w", err)
+	}
+
+	transactionID := uuid.New().String()
+	var transaction Transaction
+	err = tx.QueryRow(createTxQuery, transactionID, req.AccountID, req.Amount, req.Description).Scan(
+		&transaction.TransactionID,
+		&transaction.FromAccount,
+		&transaction.ToAccount,
+		&transaction.TransactionType,
+		&transaction.Amount,
+		&transaction.Description,
+		&transaction.CreatedAt,
+	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create transaction: %w", err)
 	}
@@ -131,7 +134,7 @@ func (s *Service) Deposit(req DepositRequest) (*Transaction, error) {
 		return nil, fmt.Errorf("failed to commit transaction: %w", err)
 	}
 
-	return s.GetTransaction(transactionID)
+	return &transaction, nil
 }
 
 func (s *Service) Withdraw(req WithdrawRequest) (*Transaction, error) {
