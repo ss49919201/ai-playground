@@ -7,6 +7,7 @@ import (
 	"yesql-account-system/internal/account"
 	"yesql-account-system/internal/auth"
 	"yesql-account-system/internal/db"
+	"yesql-account-system/internal/handler"
 	"yesql-account-system/internal/yesql"
 
 	"github.com/gorilla/mux"
@@ -32,20 +33,20 @@ func main() {
 
 	accountService := account.NewService(database.GetConn(), loader)
 	authService := auth.NewService(database.GetConn(), loader)
-	handler := NewHandler(accountService, authService)
+	handler := handler.NewHandler(accountService, authService)
 
 	authMiddleware := auth.NewMiddleware(authService)
 
 	r := mux.NewRouter()
-	
+
 	// Auth routes (no authentication required)
 	r.HandleFunc("/auth/register", handler.Register).Methods("POST")
 	r.HandleFunc("/auth/login", handler.Login).Methods("POST")
-	
+
 	// Protected routes
 	protected := r.PathPrefix("/api").Subrouter()
 	protected.Use(authMiddleware.RequireAuth)
-	
+
 	protected.HandleFunc("/logout", handler.Logout).Methods("POST")
 	protected.HandleFunc("/accounts", handler.CreateAccount).Methods("POST")
 	protected.HandleFunc("/accounts", handler.GetUserAccounts).Methods("GET")
