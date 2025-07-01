@@ -31,3 +31,13 @@ WHERE account_id = ?;
 INSERT INTO transactions (transaction_id, from_account, to_account, transaction_type, amount, description)
 VALUES (?, NULL, ?, 'deposit', ?, ?)
 RETURNING transaction_id, from_account, to_account, transaction_type, amount, description, created_at;
+
+-- name: withdraw_update_balance
+UPDATE accounts 
+SET balance = balance - ?, updated_at = CURRENT_TIMESTAMP
+WHERE account_id = ? AND balance >= ?;
+
+-- name: withdraw_create_transaction
+INSERT INTO transactions (transaction_id, from_account, to_account, transaction_type, amount, description)
+VALUES (?, ?, NULL, 'withdrawal', ?, ?)
+RETURNING transaction_id, from_account, to_account, transaction_type, amount, description, created_at;
