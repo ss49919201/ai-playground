@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 300px;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d1117;
+      color: #f0f6fc;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 18px;
+      margin: 0;
+      color: #58a6ff;
+    }
+    .info {
+      background: #21262d;
+      padding: 15px;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+    }
+    .info p {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .info p:last-child {
+      margin-bottom: 0;
+    }
+    .code {
+      background: #161b22;
+      padding: 8px;
+      border-radius: 4px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 12px;
+      border: 1px solid #30363d;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>GitHub PR Checkout Helper</h1>
+  </div>
+  
+  <div class="info">
+    <p>Navigate to any GitHub Pull Request page and look for the "Copy checkout" button.</p>
+    <p>It will copy the command:</p>
+    <div class="code">gh pr checkout {PR_NUMBER}</div>
+    <p>This extension works on GitHub PR pages matching:</p>
+    <div class="code">github.com/*/pull/*</div>
+  </div>
+</body>
+</html>
