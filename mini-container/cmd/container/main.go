@@ -24,5 +24,9 @@ func main() {
 		fmt.Println("  run     Run a command in a container")
 	case "run":
 		fmt.Printf("Running: %s %v\n", cmd.Program, cmd.Args)
+		if err := container.RunCommand(cmd.Program, cmd.Args); err != nil {
+			fmt.Fprintf(os.Stderr, "Error running command: %v\n", err)
+			os.Exit(1)
+		}
 	}
 }
