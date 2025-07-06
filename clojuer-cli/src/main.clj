@@ -45,6 +45,31 @@
       ;; 小さい要素をソート + ピボット + 大きい要素をソート
       (concat (quicksort smaller) [pivot] (quicksort larger)))))
 
+(defn quicksort-iterative [coll]
+  ;; 簡単な実装: 実際には再帰を使わずに実装するのは複雑
+  ;; ここでは参考として単純な実装を示す
+  (if (<= (count coll) 1)
+    coll
+    ;; ループで実装（結果を段階的に構築）
+    (loop [to-process [coll]
+           completed []]
+      ;; 処理待ちがなくなったら結果を返す
+      (if (empty? to-process)
+        (flatten completed)
+        ;; 次の配列を処理
+        (let [current (first to-process)
+              remaining (rest to-process)]
+          ;; 1要素以下なら完了リストに追加
+          (if (<= (count current) 1)
+            (recur remaining (conj completed current))
+            ;; 分割して処理待ちに追加
+            (let [pivot (first current)
+                  rest-coll (rest current)
+                  smaller (filter #(< % pivot) rest-coll)
+                  larger (filter #(>= % pivot) rest-coll)]
+              ;; 小さい要素、ピボット、大きい要素の順で処理
+              (recur (concat [smaller [pivot] larger] remaining) completed))))))))
+
 (deftest fizzbuzz-test
   (testing "FizzBuzz function"
     (is (= "1" (fizzbuzz 1)))
@@ -76,7 +101,12 @@
     (is (= [] (quicksort [])))
     (is (= [1] (quicksort [1])))
     (is (= [1 2 3] (quicksort [3 1 2])))
-    (is (= [1 2 3 5 8 9] (quicksort [5 2 8 1 9 3])))))
+    (is (= [1 2 3 5 8 9] (quicksort [5 2 8 1 9 3]))))
+  (testing "Quicksort iterative function"
+    (is (= [] (quicksort-iterative [])))
+    (is (= [1] (quicksort-iterative [1])))
+    (is (= [1 2 3] (quicksort-iterative [3 1 2])))
+    (is (= [1 2 3 5 8 9] (quicksort-iterative [5 2 8 1 9 3])))))
 
 (defn -main [& args]
   (run-fizzbuzz 100))
