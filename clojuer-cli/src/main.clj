@@ -1,5 +1,6 @@
 (ns main
-  (:require [clojure.test :refer :all]))
+  (:require [clojure.test :refer :all]
+            [clojure.string]))
 
 (defn fizzbuzz [n]
   (cond
@@ -23,6 +24,12 @@
 (defn filter-primes [nums]
   (filter prime? nums))
 
+(defn lowercase? [s]
+  (= s (clojure.string/lower-case s)))
+
+(defn not-all-lowercase? [strings]
+  (not-every? lowercase? strings))
+
 (deftest fizzbuzz-test
   (testing "FizzBuzz function"
     (is (= "1" (fizzbuzz 1)))
@@ -41,6 +48,13 @@
     (is (= [2 3] (filter-primes [1 2 3 4])))
     (is (= [] (filter-primes [1 4 6 8])))
     (is (= [2 3 5 7] (filter-primes [1 2 3 4 5 6 7 8 9 10])))))
+
+(deftest not-all-lowercase-test
+  (testing "Not all lowercase function"
+    (is (= true (not-all-lowercase? ["hello" "World"])))
+    (is (= false (not-all-lowercase? ["hello" "world"])))
+    (is (= true (not-all-lowercase? ["Hello" "WORLD"])))
+    (is (= false (not-all-lowercase? [])))))
 
 (defn -main [& args]
   (run-fizzbuzz 100))
