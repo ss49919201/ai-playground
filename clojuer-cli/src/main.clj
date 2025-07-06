@@ -30,6 +30,21 @@
 (defn not-all-lowercase? [strings]
   (not-every? lowercase? strings))
 
+(defn quicksort [coll]
+  ;; 空の配列または要素が1つの場合はそのまま返す
+  (if (<= (count coll) 1)
+    coll
+    ;; ピボットを最初の要素とする
+    (let [pivot (first coll)
+          ;; 残りの要素を取得
+          rest-coll (rest coll)
+          ;; ピボットより小さい要素を抽出
+          smaller (filter #(< % pivot) rest-coll)
+          ;; ピボットより大きい要素を抽出
+          larger (filter #(>= % pivot) rest-coll)]
+      ;; 小さい要素をソート + ピボット + 大きい要素をソート
+      (concat (quicksort smaller) [pivot] (quicksort larger)))))
+
 (deftest fizzbuzz-test
   (testing "FizzBuzz function"
     (is (= "1" (fizzbuzz 1)))
@@ -55,6 +70,13 @@
     (is (= false (not-all-lowercase? ["hello" "world"])))
     (is (= true (not-all-lowercase? ["Hello" "WORLD"])))
     (is (= false (not-all-lowercase? [])))))
+
+(deftest quicksort-test
+  (testing "Quicksort function"
+    (is (= [] (quicksort [])))
+    (is (= [1] (quicksort [1])))
+    (is (= [1 2 3] (quicksort [3 1 2])))
+    (is (= [1 2 3 5 8 9] (quicksort [5 2 8 1 9 3])))))
 
 (defn -main [& args]
   (run-fizzbuzz 100))
