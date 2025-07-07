@@ -1,0 +1,7 @@
+[tasks.server]
+description = "Start the Clojure web server on localhost:8080"
+run = "clojure -M -m main"
+
+[tasks.test]
+description = "Run all tests"
+run = "clojure -M -e \"(require 'main) (clojure.test/run-tests 'main)\""

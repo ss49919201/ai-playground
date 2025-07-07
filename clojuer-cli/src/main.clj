@@ -1,6 +1,11 @@
 (ns main
   (:require [clojure.test :refer :all]
-            [clojure.string]))
+            [clojure.string]
+            [ring.adapter.jetty :refer [run-jetty]]
+            [compojure.core :refer [defroutes GET]]
+            [compojure.route :as route]
+            [ring.middleware.json :refer [wrap-json-response]]
+            [ring.util.response :refer [response]]))
 
 (defn fizzbuzz [n]
   (cond
@@ -108,5 +113,22 @@
     (is (= [1 2 3] (quicksort-iterative [3 1 2])))
     (is (= [1 2 3 5 8 9] (quicksort-iterative [5 2 8 1 9 3])))))
 
+(defn health-handler [request]
+  (response {:msg "ok"}))
+
+(deftest health-handler-test
+  (testing "Health endpoint handler"
+    (let [response (health-handler {})]
+      (is (= {:msg "ok"} (:body response)))
+      (is (= 200 (:status response))))))
+
+(defroutes app-routes
+  (GET "/health" [] health-handler)
+  (route/not-found "Not Found"))
+
+(def app
+  (wrap-json-response app-routes))
+
 (defn -main [& args]
-  (run-fizzbuzz 100))
+  (println "Starting server on port 8080...")
+  (run-jetty app {:port 8080 :join? false}))
