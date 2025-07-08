@@ -2,10 +2,13 @@
   (:require [clojure.test :refer :all]
             [clojure.string]
             [ring.adapter.jetty :refer [run-jetty]]
-            [compojure.core :refer [defroutes GET]]
+            [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [ring.middleware.json :refer [wrap-json-response]]
-            [ring.util.response :refer [response]]))
+            [ring.util.response :refer [response status]]
+            [ring.middleware.json :refer [wrap-json-body]]))
+
+(def users-db (atom {}))
 
 (defn fizzbuzz [n]
   (cond
@@ -116,18 +119,63 @@
 (defn health-handler [request]
   (response {:msg "ok"}))
 
+(defn get-user-handler [request]
+  (let [id (get-in request [:route-params :id])
+        user (get @users-db id)]
+    (if user
+      (response user)
+      (-> (response {:error "User not found"})
+          (status 404)))))
+
+(defn create-user-handler [request]
+  (let [user-data (:body request)
+        id (str (java.util.UUID/randomUUID))]
+    (if user-data
+      (do
+        (swap! users-db assoc id user-data)
+        (-> (response (assoc user-data :id id))
+            (status 201)))
+      (-> (response {:error "Invalid user data"})
+          (status 400)))))
+
 (deftest health-handler-test
   (testing "Health endpoint handler"
     (let [response (health-handler {})]
       (is (= {:msg "ok"} (:body response)))
       (is (= 200 (:status response))))))
 
+(deftest user-handlers-test
+  (testing "Get user handler"
+    (reset! users-db {"test-id" {:name "Test User" :email "test@example.com"}})
+    (let [response (get-user-handler {:route-params {:id "test-id"}})]
+      (is (= {:name "Test User" :email "test@example.com"} (:body response)))
+      (is (= 200 (:status response))))
+    (let [response (get-user-handler {:route-params {:id "nonexistent"}})]
+      (is (= {:error "User not found"} (:body response)))
+      (is (= 404 (:status response)))))
+  (testing "Create user handler"
+    (reset! users-db {})
+    (let [user-data {:name "New User" :email "new@example.com"}
+          response (create-user-handler {:body user-data})]
+      (is (= "New User" (get-in response [:body :name])))
+      (is (= "new@example.com" (get-in response [:body :email])))
+      (is (string? (get-in response [:body :id])))
+      (is (= 201 (:status response)))
+      (is (= 1 (count @users-db))))
+    (let [response (create-user-handler {:body nil})]
+      (is (= {:error "Invalid user data"} (:body response)))
+      (is (= 400 (:status response))))))
+
 (defroutes app-routes
   (GET "/health" [] health-handler)
+  (GET "/users/:id" [id] get-user-handler)
+  (POST "/users/" [] create-user-handler)
   (route/not-found "Not Found"))
 
 (def app
-  (wrap-json-response app-routes))
+  (-> app-routes
+      (wrap-json-body {:keywords? true})
+      wrap-json-response))
 
 (defn -main [& args]
   (println "Starting server on port 8080...")
