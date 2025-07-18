@@ -10,7 +10,7 @@ Next.jsとCloudflareを使用したプロジェクトの初期設定を行う
 4. Tailwind CSSの設定
 5. プロジェクト構成の基本ディレクトリ作成
 6. 基本的なgitignoreファイル作成
-7. Jest・Testing Library設定
+7. Vitest・Testing Library設定
 8. 基本的なテストユーティリティの作成
 
 ## 成果物
@@ -20,7 +20,7 @@ Next.jsとCloudflareを使用したプロジェクトの初期設定を行う
 - postcss.config.js
 - .gitignore
 - 基本ディレクトリ構成 (src/, components/, pages/, lib/, types/)
-- jest.config.js
+- vitest.config.ts
 - __tests__/utils/testUtils.ts
 
 ## 想定作業量
@@ -35,3 +35,4 @@ Next.jsとCloudflareを使用したプロジェクトの初期設定を行う
 - TypeScriptが正常に動作する
 - Tailwind CSSが適用される
 - 基本的なプロジェクト構成が整っている
+- Vitestが正常に動作する
