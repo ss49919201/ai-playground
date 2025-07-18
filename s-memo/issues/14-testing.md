@@ -13,9 +13,9 @@
 ## 成果物
 - __tests__/integration/ (統合テスト)
 - __tests__/e2e/ (E2Eテスト)
-- cypress.config.js (Cypress設定)
+- cypress.config.ts (Cypress設定)
 - .github/workflows/test.yml (CI/CD設定)
-- test-coverage.json (カバレッジ設定)
+- vitest.config.ts (カバレッジ設定更新)
 
 ## 想定作業量
 - コード差分: 約300行
