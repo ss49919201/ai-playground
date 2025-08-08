@@ -166,3 +166,50 @@ a.secondary {
     filter: invert();
   }
 }
+
+.todoList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.todoItem {
+  border: 1px solid var(--gray-alpha-200);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--gray-alpha-100);
+  transition: box-shadow 0.2s ease;
+}
+
+.todoItem:hover {
+  box-shadow: 0 2px 8px rgba(var(--gray-rgb), 0.1);
+}
+
+.todoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.todoTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.todoTitle.completed {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.todoBody {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(var(--gray-rgb), 0.8);
+}
+

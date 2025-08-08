@@ -43,11 +43,8 @@ export default function Home() {
             <div key={item.id} className={styles.todoItem}>
               <div className={styles.todoHeader}>
                 <h2 className={`${styles.todoTitle} ${item.completed ? styles.completed : ""}`}>
-                  {item.completed ? "✅ " : "⭕ "}{item.title}
+                  {item.title}
                 </h2>
-                <span className={`${styles.status} ${item.completed ? styles.statusCompleted : styles.statusPending}`}>
-                  {item.completed ? "完了" : "未完了"}
-                </span>
               </div>
               <p className={styles.todoBody}>{item.body}</p>
             </div>
