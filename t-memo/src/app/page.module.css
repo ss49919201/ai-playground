@@ -213,3 +213,20 @@ a.secondary {
   color: rgba(var(--gray-rgb), 0.8);
 }
 
+.editButton {
+  background: transparent;
+  border: 1px solid var(--gray-alpha-200);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.editButton:hover {
+  background: var(--gray-alpha-100);
+  border-color: var(--foreground);
+}
+

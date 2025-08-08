@@ -1,4 +1,5 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import PostItem from "./components/PostItem";
 import styles from "./page.module.css";
 
 type Post = {
@@ -7,7 +8,7 @@ type Post = {
   body: string;
 };
 
-export default async function Home() {
+export default async function Page() {
   const ctx = getCloudflareContext();
   const { keys } = await ctx.env.POST.list();
   const values = (
@@ -26,12 +27,7 @@ export default async function Home() {
         <h1>t-memo</h1>
         <div className={styles.postList}>
           {values.map((item) => (
-            <div key={item.id} className={styles.postItem}>
-              <div className={styles.postHeader}>
-                <h2 className={`${styles.postTitle}`}>{item.title}</h2>
-              </div>
-              <p className={styles.postBody}>{item.body}</p>
-            </div>
+            <PostItem key={item.id} post={item} />
           ))}
         </div>
       </main>
