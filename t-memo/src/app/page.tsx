@@ -9,7 +9,7 @@ type Post = {
 };
 
 export default async function Page() {
-  const ctx = getCloudflareContext();
+  const ctx = await getCloudflareContext({ async: true });
   const { keys } = await ctx.env.POST.list();
   const values = (
     await Promise.all(

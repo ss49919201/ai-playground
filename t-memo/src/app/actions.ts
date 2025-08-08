@@ -4,8 +4,8 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { revalidatePath } from "next/cache";
 
 export async function updatePost(postId: string, title: string, body: string) {
-  const ctx = getCloudflareContext();
-  
+  const ctx = await getCloudflareContext({ async: true });
+
   const post = {
     id: postId,
     title: title,
@@ -17,8 +17,8 @@ export async function updatePost(postId: string, title: string, body: string) {
 }
 
 export async function createPost(title: string, body: string) {
-  const ctx = getCloudflareContext();
-  
+  const ctx = await getCloudflareContext({ async: true });
+
   const postId = crypto.randomUUID();
   const post = {
     id: postId,
@@ -31,8 +31,8 @@ export async function createPost(title: string, body: string) {
 }
 
 export async function deletePost(postId: string) {
-  const ctx = getCloudflareContext();
-  
+  const ctx = await getCloudflareContext({ async: true });
+
   await ctx.env.POST.delete(postId);
   revalidatePath("/");
 }
