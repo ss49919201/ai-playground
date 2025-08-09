@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import PostForm from "./PostForm";
+import { formatDate } from "../utils/dateFormat";
 import styles from "../page.module.css";
 
 type Post = {
   id: string;
   title: string;
   body: string;
+  updatedAt: string;
 };
 
 type PostItemProps = {
@@ -55,6 +57,11 @@ export default function PostItem({ post }: PostItemProps) {
         </button>
       </div>
       <p className={styles.postBody}>{post.body}</p>
+      <div className={styles.postMeta}>
+        <span className={styles.updatedAt}>
+          最終更新: {formatDate(post.updatedAt)}
+        </span>
+      </div>
     </div>
   );
 }

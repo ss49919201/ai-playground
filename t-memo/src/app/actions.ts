@@ -10,6 +10,7 @@ export async function updatePost(postId: string, title: string, body: string) {
     id: postId,
     title: title,
     body: body,
+    updatedAt: new Date().toISOString(),
   };
 
   await ctx.env.POST.put(postId, JSON.stringify(post));
@@ -24,6 +25,7 @@ export async function createPost(title: string, body: string) {
     id: postId,
     title: title,
     body: body,
+    updatedAt: new Date().toISOString(),
   };
 
   await ctx.env.POST.put(postId, JSON.stringify(post));

@@ -6,6 +6,7 @@ type Post = {
   id: string;
   title: string;
   body: string;
+  updatedAt: string;
 };
 
 export default async function Page() {

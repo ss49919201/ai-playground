@@ -261,3 +261,15 @@ a.secondary {
   margin-bottom: 24px;
 }
 
+.postMeta {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--gray-alpha-200);
+}
+
+.updatedAt {
+  font-size: 12px;
+  color: rgba(var(--gray-rgb), 0.6);
+  font-style: italic;
+}
+
