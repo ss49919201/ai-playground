@@ -230,3 +230,34 @@ a.secondary {
   border-color: var(--foreground);
 }
 
+.headerActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+.newPostButton {
+  background: var(--foreground);
+  color: var(--background);
+  border: 1px solid var(--foreground);
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.newPostButton:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.newPostButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.newPostFormContainer {
+  margin-bottom: 24px;
+}
+

@@ -1,31 +1,36 @@
 "use client";
 
-import { updatePost } from "../actions";
+import { updatePost, createPost } from "../actions";
 import { useState } from "react";
 import styles from "./PostForm.module.css";
 
 type PostFormProps = {
-  postId: string;
-  initialTitle: string;
-  initialBody: string;
+  postId?: string;
+  initialTitle?: string;
+  initialBody?: string;
   onCancel: () => void;
   onSave: () => void;
 };
 
-export default function PostForm({ postId, initialTitle, initialBody, onCancel, onSave }: PostFormProps) {
+export default function PostForm({ postId, initialTitle = "", initialBody = "", onCancel, onSave }: PostFormProps) {
   const [title, setTitle] = useState(initialTitle);
   const [body, setBody] = useState(initialBody);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isNewPost = !postId;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      await updatePost(postId, title, body);
+      if (isNewPost) {
+        await createPost(title, body);
+      } else {
+        await updatePost(postId, title, body);
+      }
       onSave();
     } catch (error) {
-      console.error("Failed to update post:", error);
+      console.error(`Failed to ${isNewPost ? 'create' : 'update'} post:`, error);
     } finally {
       setIsSubmitting(false);
     }
@@ -75,7 +80,7 @@ export default function PostForm({ postId, initialTitle, initialBody, onCancel, 
           className={styles.saveButton}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "保存中..." : "保存"}
+          {isSubmitting ? (isNewPost ? "作成中..." : "保存中...") : (isNewPost ? "作成" : "保存")}
         </button>
       </div>
     </form>
